@@ -12,12 +12,11 @@
 
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
- <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script type="text/javascript">
 //검색 / page 두가지 경우 모두 Form 전송을 위해 JavaScrpt 이용
@@ -40,66 +39,60 @@
 		/* var prodNo =$("#prodNo").val(); */
 		var currentPage = $("#currentPage").val();
 		/* alert("listProduct.jsp prodNo= "+prodNo); */
-		/* var searchSource = ['aaa','bbb','ccc','abaaaa','dddd','eeee', 'irjflqpe', 'aewqljrlkejr']; */
+		
+		//var searchResult = 
 		
 		$( ".ct_btn01:contains('검색')" ).on("click", function() {
 			/* alert(  $( "td.ct_btn01:contains('검색')" ).html() ); */
+			var searchK= $("input[name=searchKeyword]").val();
+			alert(searchK);
+			$( "input[name=searchKeyword]" ).autocomplete({
+			      source: searchK
+			    });
 			fncGetProductList(currentPage,menu);
 		})
 		
-		/* $(".ct_btn01:contains('검색')").autocomplete({
-			 var source : searchSource ,
-			 select : function(event, ui) {
-				 console.log(ui,item); 		},
-			 focus : function(event, ui) {
-				 return false;			 	},
-			minlength : 1 ,
-			autoFocus : true ,
-			classes : {
-				'ui-autocomplete' : 'highlight'	},
-			delay : 500 ,
-			disable : false,
-			position : { my : 'right top', at : 'right bottom'} ,
-			close : function(event) {
-				console.log(event)
-			}
-		}) */
-		
+				
 		$( ".ct_list_pop td:nth-child(3)").on("click", function() {
-			/* var prodNo = $(this).children($("#prodNo")).val();
+			var prodNo = $(this).children($("#prodNo")).val();
+			//var prodNo = $(this).text().trim();
 			
-			alert("prodNo= "+prodNo);
-			$.ajax( 
-					{
-						url : "/product/json/getProduct/" ,
-						method : "POST" ,
-						dataType : "json" ,
-						headers : {
-							"Accept" : "application/json",
-							"Content-Type" : "application/json"
-						},
-						success : function(JSONData , status) {
-
-							//Debug...
-							alert(status);
-							//Debug...
-							alert("JSONData : \n"+JSONData);
-							
-							var displayValue = "<h3>"
-														+"제품번호 : "+JSONData.prodNo+"<br/>"
-														+"이    름 : "+JSONData.prodName+"<br/>"
-														+"상세정보 : "+JSONData.prodDetail+"<br/>"
-														+"가    격 : "+JSONData.price+"<br/>"
-														+"제조일자 : "+JSONData.manuDate+"<br/>"
-														+"</h3>";
-							//Debug...									
-							//alert(displayValue);
-							$("h3").remove();
-							$( "#"+prodNo+"" ).html(displayValue);
-						}
-				}); */
+			//alert("menu= "+menu);
 			
-			 self.location = "/product/getProduct?prodNo="+$(this).children($("#prodNo")).val()+"&menu="+menu; 
+			if(menu=="search"){
+				$.ajax( 
+						{
+							url : "/product/json/getProduct/"+prodNo ,
+							method : "GET" ,
+							dataType : "json" ,
+							headers : {
+								"Accept" : "application/json",
+								"Content-Type" : "application/json"
+							},
+							success : function(JSONData , status) {
+	
+								//Debug...
+								//alert(status);
+								//Debug...
+								//alert("JSONData : \n"+JSONData);
+								
+								var displayValue = "<h3>"
+															+"제품번호 : "+JSONData.prodNo+"<br/>"
+															+"이    름 : "+JSONData.prodName+"<br/>"
+															+"상세정보 : "+JSONData.prodDetail+"<br/>"
+															+"가    격 : "+JSONData.price+"<br/>"
+															+"제조일자 : "+JSONData.manuDate+"<br/>"
+															+"</h3>";
+								//Debug...									
+								//alert(displayValue);
+								$("h3").remove();
+								$( "#"+prodNo+"" ).html(displayValue);
+							}
+					}); 
+				}else if(menu=="manage"){
+				
+				 self.location = "/product/getProduct?prodNo="+$(this).children($("#prodNo")).val()+"&menu="+menu;
+				}
 			
 		});
 		
@@ -253,7 +246,8 @@
 			</td>		
 		</tr>
 		<tr>
-		<td colspan="11" bgcolor="D6D7D6" height="1"></td>
+		<!-- <td colspan="11" bgcolor="D6D7D6" height="1"></td> -->
+		<td id="${product.prodNo}" colspan="11" bgcolor="D6D7D6" height="1"></td>
 		</tr>
 	</c:forEach>
 </table>
