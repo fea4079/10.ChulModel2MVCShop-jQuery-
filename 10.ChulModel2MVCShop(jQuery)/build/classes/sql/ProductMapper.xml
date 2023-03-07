@@ -17,6 +17,10 @@
 		<result property="regDate" 			column="reg_date" 			jdbcType="DATE" />
 	</resultMap>
 	
+	<insert 	id="getProdName"		parameterType="product" >
+	 	select prod_name from product
+	 </insert>
+	
 	<!-- SQL : INSERT -->
 	<insert 	id="addProduct"		parameterType="product" >
 	 	INSERT INTO product(prod_no, prod_name, prod_detail, manufacture_day, price, image_file, reg_date)

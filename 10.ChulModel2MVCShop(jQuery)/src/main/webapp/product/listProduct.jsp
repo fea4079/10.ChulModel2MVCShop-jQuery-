@@ -12,6 +12,7 @@
 
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="/resources/demos/style.css">
@@ -39,20 +40,63 @@
 		/* var prodNo =$("#prodNo").val(); */
 		var currentPage = $("#currentPage").val();
 		/* alert("listProduct.jsp prodNo= "+prodNo); */
+		//오토컴플릿 구현중
+		 /* var availableTags = [
+		      "ActionScript",
+		      "AppleScript",
+		      "Asp",
+		      "BASIC",
+		      "C",
+		      "C++",
+		      "Clojure",
+		      "COBOL",
+		      "ColdFusion",
+		      "Erlang",
+		      "Fortran",
+		      "Groovy",
+		      "Haskell",
+		      "Java",
+		      "JavaScript",
+		      "Lisp",
+		      "Perl",
+		      "PHP",
+		      "Python",
+		      "Ruby",
+		      "Scala",
+		      "Scheme"
+		    ]; */
 		
-		//var searchResult = 
+		/*$(".input[name=searchKeyword]").autocomplete({
+			source : availableTags
+			select : function(event, ui) { //item 선택시 이벤트
+				console.log(ui, item);
+			},
+			focus : function(event,ui) { //포커스시 이벤트
+				return false;
+			}
+			minLength : 1, //최소 글자수
+			autoFocus : true,  // 메뉴가 표시될때 첫번째 항목에 포커스
+			classes : { //위젯 요소에 추가할 클래스
+				'ui-autocomplete' : 'highlight'
+			},
+			delay : 500, //오토컴플릿 이벤트 발생까지 지연시간 ms
+			disable : false, //true시 자동완성기능 꺼짐
+			position : {my : 'right top', at : 'right bottom'}, // 제안 메뉴의 위치 식별
+			close : function(event) { // 자동완성 창 닫아질때의 이벤트
+				consol.log(event)
+			}
+		});  */
 		
 		$( ".ct_btn01:contains('검색')" ).on("click", function() {
 			/* alert(  $( "td.ct_btn01:contains('검색')" ).html() ); */
-			var searchK= $("input[name=searchKeyword]").val();
-			alert(searchK);
-			$( "input[name=searchKeyword]" ).autocomplete({
-			      source: searchK
-			    });
+			/* var searchK= $("input[name=searchKeyword]").val();*/
+			/*alert(searchK);*/
+			/* $( "input[name=searchKeyword]" ).autocomplete({
+			      source: availableTags
+			    });  */
 			fncGetProductList(currentPage,menu);
 		})
-		
-				
+								
 		$( ".ct_list_pop td:nth-child(3)").on("click", function() {
 			var prodNo = $(this).children($("#prodNo")).val();
 			//var prodNo = $(this).text().trim();
@@ -82,6 +126,7 @@
 															+"상세정보 : "+JSONData.prodDetail+"<br/>"
 															+"가    격 : "+JSONData.price+"<br/>"
 															+"제조일자 : "+JSONData.manuDate+"<br/>"
+															+"파 일 명 : "+JSONData.fileName+"<br/>"
 															+"</h3>";
 								//Debug...									
 								//alert(displayValue);
@@ -163,10 +208,11 @@
 				<option value="1" ${! empty search.searchCondition && search.searchCondition==1 ? "selected" : ""}>상품명</option>
 				<option value="2" ${! empty search.searchCondition && search.searchCondition==2 ? "selected" : ""}>가격</option>
 			</select>
-			
+			<div class="ui-widget">
 			<input 	type="text" name="searchKeyword" 
 							value="${! empty search.searchKeyword ? search.searchKeyword : ""}" 
-							class="ct_input_g"	style="width:200px; height:20px" >
+							class="ct_input_g"	autocomplete="on" style="width:200px; height:20px " >
+			</div>
 		</td>
 	
 		<td align="right" width="70">
